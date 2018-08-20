@@ -3,8 +3,12 @@
   $users = json_decode($json, true);
   $users8 = $users['user8']; // always have this
   $users4 = [];
+  $users16 = [];
   if(!empty($users['user4'])){
       $users4 = $users['user4'];
+  }
+  if(!empty($users['user16'])){
+      $users16 = $users['user16'];
   }
   $numIsChoose = 0;
   foreach ($users8 as $user) {
@@ -57,6 +61,29 @@
     $result[] = $level3;
     return $result;
   }
+
+  function getImageArr16($users ){
+    $DEFAULT_NO_IMAGE = "noimage.jpg";
+    $result = [];
+    // This is for first result
+    $level2 = [];
+    $level3 = [];
+    $level1 = [];
+    foreach($users as $user){
+      $level1[] = $user['profilePicture'];
+    }
+    foreach(range(1,4 ) as $number){
+      $level2[] = $DEFAULT_NO_IMAGE;
+    }
+    foreach(range(1,2 ) as $number){
+      $level3[] = $DEFAULT_NO_IMAGE;
+    }
+    $result[] = $level1;
+    $result[] = $level2;
+    $result[] = $level3;
+    return $result;
+  }
+
   function groupTo2($finalArr){
     $resultArr = [];
     foreach($finalArr as $levelArr){
@@ -83,14 +110,20 @@
 
       $resultLeft = []; // 8 4 2
       $resultRight = []; // 8 4 2
-      if(!empty($users4)){
+      if(!empty($users16)){
+        $len = count($users16);
+        $firsthalf16 = array_slice($users16, 0, $len / 2);
+        $secondhalf16 = array_slice($users16, $len / 2);
+        $resultLeft = getImageArr16($firsthalf16);
+        $resultRight = getImageArr16($secondhalf16);
+
+      }else if(!empty($users4)){
         // This is for final result
         $firsthalf4 = array_slice($users4, 0, $len / 2);
         $secondhalf4 = array_slice($users4, $len / 2);
 
         $resultLeft = getImageArr4($firsthalf, $firsthalf4);
         $resultRight = getImageArr4($secondhalf, $secondhalf4);
-
       }else{
         $resultLeft = getImageArr8($firsthalf);
         $resultRight = getImageArr8($secondhalf);
