@@ -57,6 +57,24 @@
     $result[] = $level3;
     return $result;
   }
+  function groupTo2($finalArr){
+    $resultArr = [];
+    foreach($finalArr as $levelArr){
+      $mainLevelArr = [];
+      $i = 0;
+      $tempImg = [];
+      foreach($levelArr as $img){
+        $tempImg[]  = $img;
+        if($i > 0 && $i %2 == 1){
+          $mainLevelArr[] = $tempImg;
+          $tempImg = [];
+        }
+        $i++;
+      }
+      $resultArr[] = $mainLevelArr;
+    }
+    return $resultArr;
+  }
   // End Value to use
   if ($numIsChoose % 2 == 0) {
       $len = count($users8);
@@ -72,13 +90,42 @@
 
         $resultLeft = getImageArr4($firsthalf, $firsthalf4);
         $resultRight = getImageArr4($secondhalf, $secondhalf4);
-        var_dump($resultLeft);
+
       }else{
         $resultLeft = getImageArr8($firsthalf);
         $resultRight = getImageArr8($secondhalf);
-        var_dump($resultRight);
       }
+      $finalArr = groupTo2(array_merge($resultLeft, array_reverse($resultRight)) ) ;
   } else {
       echo "Wrong data. This is not the end of round. ". $numIsChoose;
+      die();
   }
 ?>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Locup Result</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="bracket-container">
+    <?php foreach($finalArr as $levelArr){ ?>
+      <div class="bracket-level">
+        <?php foreach($levelArr as $matchUpArr){ ?>
+          <div class="bracket-matchup">
+              <?php foreach($matchUpArr as $img){ ?>
+            <div class="bracket-team winner">
+              <div class="bracket-name"><img class='round-img' src='<?php echo $img;?>' /></div>
+            </div>
+              <?php } ?>
+          </div>
+        <?php } ?>
+      </div>
+    <?php
+    }
+    ?>
+  </div>
+</body>
+
+</html>
