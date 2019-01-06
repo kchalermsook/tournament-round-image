@@ -1,4 +1,38 @@
 <?php
+  function logToDB($userId){
+    $servername = "topwork.asia";
+    $username = "locups";
+    $password = "locups1q2w3e";
+    $dbname = "locups";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $sql = "INSERT INTO logs (user_id)
+    VALUES ('$userId')";
+
+    if ($conn->query($sql) === TRUE) {
+        //echo "New record created successfully";
+    } else {
+        //echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    $conn->close();
+  }
+  //
+  $headers = apache_request_headers();
+  $userId = "";
+  foreach ($headers as $header => $value) {
+      if($header == "userId"){
+          $userId = $value;
+      }
+  }
+  logToDB($userId);
+  //
   $json = file_get_contents('php://input');
   $users = json_decode($json, true);
   $users8 = $users['user8']; // always have this
