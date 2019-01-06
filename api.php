@@ -27,7 +27,7 @@
   $headers = apache_request_headers();
   $userId = "";
   foreach ($headers as $header => $value) {
-      if($header == "userId"){
+      if(strtolower($header) == "userid"){
           $userId = $value;
       }
   }
